@@ -28,7 +28,8 @@ class MusicPlayer extends Component {
       play: this.props.autoplay || false,
       playMode: 'loop',
       progress: 0,
-      volume: 1
+      volume: 1,
+      playlist: []
     }
     this.modeList = ['loop', 'random', 'repeat']
   }
@@ -37,6 +38,18 @@ class MusicPlayer extends Component {
     const audioContainer = this.audioContainer
     audioContainer.addEventListener('timeupdate', this.updateProgress.bind(this))
     audioContainer.addEventListener('ended', this.end.bind(this))
+    var playlist = this.props.playlist.map((song)=> {
+        if (song.artist.length >= 2) {
+          return (
+            <div>
+              <h2>{this._processArtistName(song.artist)} - {song.title}</h2>
+            </div>
+          )
+        } else {
+          return <h2>{song.artist} - {song.title}</h2>
+        }
+      })
+    this.setState({ playlist: playlist })
   }
 
   componentWillUnmount() {
@@ -44,6 +57,7 @@ class MusicPlayer extends Component {
     audioContainer.removeEventListener('timeupdate', this.updateProgress.bind(this))
     audioContainer.removeEventListener('ended', this.end.bind(this))
   }
+
 
   updateProgress() {
     const duration = this.audioContainer.duration
@@ -141,6 +155,7 @@ class MusicPlayer extends Component {
       this.audioContainer.currentTime = 0
       this.audioContainer.play()
     })
+    console.log(index)
   }
 
   _formatTime(time) {
@@ -211,6 +226,7 @@ class MusicPlayer extends Component {
               <i className="icon fa fa-step-forward" style={btnStyle} onClick={this.handleNext.bind(this)}></i>
             </div>
           </div>
+          {this.state.playlist}
         </div>
         <div className="cover-container">
           <div className="cover" style={{ backgroundImage: `url(${activeMusic.cover})` }}></div>
