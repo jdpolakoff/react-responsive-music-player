@@ -14,7 +14,7 @@ class MusicPlayer extends Component {
 
   static defaultProps = {
     autoplay: false,
-    progressColor: '#66cccc',
+    progressColor: '#ce3010',
     btnColor: '#4a4a4a',
     playlist: [],
     style: {},
@@ -38,19 +38,169 @@ class MusicPlayer extends Component {
     const audioContainer = this.audioContainer
     audioContainer.addEventListener('timeupdate', this.updateProgress.bind(this))
     audioContainer.addEventListener('ended', this.end.bind(this))
+    this.checkForMatch()
+  }
+
+  checkForMatch(){
+    const activeMusic = this.props.playlist[this.state.activeMusicIndex]
     var playlist = this.props.playlist.map((song)=> {
-        if (song.artist.length >= 2) {
-          return (
-            <div>
-              <h2>{this._processArtistName(song.artist)} - {song.title}</h2>
-            </div>
-          )
-        } else {
-          return <h2>{song.artist} - {song.title}</h2>
-        }
-      })
+      if (song.artist.length >= 2 && song.title === activeMusic.title) {
+        return (
+          <div>
+            <h2 className="nowPlaying">{this._processArtistName(song.artist)} - {song.title}</h2>
+          </div>
+        )
+      } else if (song.artist.length >= 2 && song.title !== activeMusic.title) {
+        return (
+          <div>
+            <h2>{this._processArtistName(song.artist)} - {song.title}</h2>
+          </div>
+        )
+      }
+      if (song.artist.length === 1 && song.title === activeMusic.title) {
+        return (
+          <div>
+            <h2 className="nowPlaying">{song.artist} - {song.title}</h2>
+          </div>
+        )
+      } else if (song.artist.length === 1 && song.title !== activeMusic.title) {
+        return (
+          <div>
+            <h2>{song.artist} - {song.title}</h2>
+          </div>
+        )
+      }
+    })
     this.setState({ playlist: playlist })
   }
+
+  checkForRandom(randomIndex){
+    const activeMusic = this.props.playlist[randomIndex]
+    var playlist = this.props.playlist.map((song)=> {
+      if (song.artist.length >= 2 && song.title === activeMusic.title) {
+        return (
+          <div>
+            <h2 className="nowPlaying">{this._processArtistName(song.artist)} - {song.title}</h2>
+          </div>
+        )
+      } else if (song.artist.length >= 2 && song.title !== activeMusic.title) {
+        return (
+          <div>
+            <h2>{this._processArtistName(song.artist)} - {song.title}</h2>
+          </div>
+        )
+      }
+      if (song.artist.length === 1 && song.title === activeMusic.title) {
+        return (
+          <div>
+            <h2 className="nowPlaying">{song.artist} - {song.title}</h2>
+          </div>
+        )
+      } else if (song.artist.length === 1 && song.title !== activeMusic.title) {
+        return (
+          <div>
+            <h2>{song.artist} - {song.title}</h2>
+          </div>
+        )
+      }
+    })
+    this.setState({ playlist: playlist })
+  }
+
+
+checkForMatchPrev(){
+  if (this.state.activeMusicIndex > 0) {
+    var prevSong = this.props.playlist[this.state.activeMusicIndex - 1]
+  } else {
+    var prevSong = this.props.playlist[this.props.playlist.length - 1]
+  }
+  var playlist = this.props.playlist.map((song)=> {
+    if (song.artist.length >= 2 && song.title === prevSong.title) {
+      return (
+        <div>
+          <h2 className="nowPlaying">{this._processArtistName(song.artist)} - {song.title}</h2>
+        </div>
+      )
+    } else if (song.artist.length >= 2 && song.title !== prevSong.title) {
+      return (
+        <div>
+          <h2>{this._processArtistName(song.artist)} - {song.title}</h2>
+        </div>
+      )
+    }
+    if (song.artist.length === 1 && song.title === prevSong.title) {
+      return (
+        <div>
+          <h2 className="nowPlaying">{song.artist} - {song.title}</h2>
+        </div>
+      )
+    } else if (song.artist.length === 1 && song.title !== prevSong.title) {
+      return (
+        <div>
+          <h2>{song.artist} - {song.title}</h2>
+        </div>
+      )
+    }
+  })
+  this.setState({ playlist: playlist })
+}
+
+clearMatches(){
+  var playlist = this.props.playlist.map((song)=> {
+    if (song.artist.length >= 2) {
+      return (
+        <div>
+          <h2>{this._processArtistName(song.artist)} - {song.title}</h2>
+        </div>
+      )
+    }
+    if (song.artist.length === 1) {
+      return (
+        <div>
+          <h2>{song.artist} - {song.title}</h2>
+        </div>
+      )
+    }
+  })
+  this.setState({ playlist: playlist })
+}
+
+checkForMatchNext(){
+  if (this.state.activeMusicIndex === this.props.playlist.length - 1) {
+    var nextSong = this.props.playlist[0]
+  } else {
+    var nextSong = this.props.playlist[this.state.activeMusicIndex + 1]
+  }
+  var playlist = this.props.playlist.map((song)=> {
+    if (song.artist.length >= 2 && song.title === nextSong.title) {
+      return (
+        <div>
+          <h2 className="nowPlaying">{this._processArtistName(song.artist)} - {song.title}</h2>
+        </div>
+      )
+    } else if (song.artist.length >= 2 && song.title !== nextSong.title) {
+      return (
+        <div>
+          <h2>{this._processArtistName(song.artist)} - {song.title}</h2>
+        </div>
+      )
+    }
+    if (song.artist.length === 1 && song.title === nextSong.title) {
+      return (
+        <div>
+          <h2 className="nowPlaying">{song.artist} - {song.title}</h2>
+        </div>
+      )
+    } else if (song.artist.length === 1 && song.title !== nextSong.title) {
+      return (
+        <div>
+          <h2>{song.artist} - {song.title}</h2>
+        </div>
+      )
+    }
+  })
+  this.setState({ playlist: playlist })
+}
 
   componentWillUnmount() {
     const audioContainer = this.audioContainer
@@ -99,22 +249,30 @@ class MusicPlayer extends Component {
   handleToggle() {
     this.state.play ? this.audioContainer.pause() : this.audioContainer.play()
     this.setState({ play: !this.state.play })
+    if (this.state.play !== false){
+      this.clearMatches()
+    } else {
+      this.checkForMatch()
+    }
   }
 
   handlePrev() {
     const { playMode, activeMusicIndex } = this.state
     if (playMode === 'repeat') {
       this._playMusic(activeMusicIndex)
+      this.checkForMatch()
     } else if (playMode === 'loop') {
       const total = this.props.playlist.length
       const index = activeMusicIndex > 0 ? activeMusicIndex - 1 : total - 1
       this._playMusic(index)
+      this.checkForMatchPrev()
     } else if (playMode === 'random') {
       let randomIndex = Math.floor(Math.random() * this.props.playlist.length)
       while (randomIndex === activeMusicIndex) {
         randomIndex = Math.floor(Math.random() * this.props.playlist.length)
       }
       this._playMusic(randomIndex)
+      this.checkForRandom(randomIndex)
     } else {
       this.setState({ play: false })
     }
@@ -124,16 +282,19 @@ class MusicPlayer extends Component {
     const { playMode, activeMusicIndex } = this.state
     if (playMode === 'repeat') {
       this._playMusic(activeMusicIndex)
+      this.checkForMatch()
     } else if (playMode === 'loop') {
       const total = this.props.playlist.length
       const index = activeMusicIndex < total - 1 ? activeMusicIndex + 1 : 0
       this._playMusic(index)
+      this.checkForMatchNext()
     } else if (playMode === 'random') {
       let randomIndex = Math.floor(Math.random() * this.props.playlist.length)
       while (randomIndex === activeMusicIndex) {
         randomIndex = Math.floor(Math.random() * this.props.playlist.length)
       }
       this._playMusic(randomIndex)
+      this.checkForRandom(randomIndex)
     } else {
       this.setState({ play: false })
     }
@@ -155,7 +316,7 @@ class MusicPlayer extends Component {
       this.audioContainer.currentTime = 0
       this.audioContainer.play()
     })
-    console.log(index)
+    this.checkForMatch()
   }
 
   _formatTime(time) {
@@ -180,6 +341,7 @@ class MusicPlayer extends Component {
     const progressStyle = { width: `${this.state.progress * 100}%`, backgroundColor: progressColor }
 
     return (
+      <div>
       <div className="player-container" style={this.props.style}>
         <audio
           autoPlay={this.state.play}
@@ -217,7 +379,7 @@ class MusicPlayer extends Component {
             <div className="progress" style={progressStyle}></div>
           </div>
           <div className="control-container">
-            <div className="mode-control">
+          <div className="mode-control">
               <i className={`icon fa fa-${playModeClass}`} style={btnStyle} onClick={this.handleChangePlayMode.bind(this)}></i>
             </div>
             <div className="controls">
@@ -226,10 +388,13 @@ class MusicPlayer extends Component {
               <i className="icon fa fa-step-forward" style={btnStyle} onClick={this.handleNext.bind(this)}></i>
             </div>
           </div>
-          {this.state.playlist}
         </div>
         <div className="cover-container">
           <div className="cover" style={{ backgroundImage: `url(${activeMusic.cover})` }}></div>
+        </div>
+        </div>
+        <div className="playlist">
+          {this.state.playlist}
         </div>
       </div>
     )
