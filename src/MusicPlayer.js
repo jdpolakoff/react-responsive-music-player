@@ -39,6 +39,7 @@ class MusicPlayer extends Component {
     audioContainer.addEventListener('timeupdate', this.updateProgress.bind(this))
     audioContainer.addEventListener('ended', this.end.bind(this))
     this.checkForMatch()
+    console.log('hi')
   }
 
   checkForMatch(){
