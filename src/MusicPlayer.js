@@ -42,7 +42,7 @@ class MusicPlayer extends Component {
   }
 
   checkForMatch(){
-    const activeMusic = this.props.playlist[this.state.activeMusicIndex]
+    let activeMusic = this.props.playlist[this.state.activeMusicIndex]
     var playlist = this.props.playlist.map((song)=> {
       if (song.artist.length >= 2 && song.title === activeMusic.title) {
         return (
@@ -75,7 +75,7 @@ class MusicPlayer extends Component {
   }
 
   checkForRandom(randomIndex){
-    const activeMusic = this.props.playlist[randomIndex]
+    let activeMusic = this.props.playlist[randomIndex]
     var playlist = this.props.playlist.map((song)=> {
       if (song.artist.length >= 2 && song.title === activeMusic.title) {
         return (
