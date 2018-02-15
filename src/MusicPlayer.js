@@ -44,7 +44,8 @@ class MusicPlayer extends Component {
   checkForMatch(){
     let activeMusic = this.props.playlist[this.state.activeMusicIndex]
     var playlist = this.props.playlist.map((song)=> {
-      if (song.artist.length >= 2 && song.title === activeMusic.title) {
+      if (song.artist.length >= 2 && this._processArtistName(song.artist) === this._processArtistName(activeMusic.artist) && song.title === activeMusic.title) {
+        console.log(this._processArtistName(song.artist))
         return (
           <div>
             <h2 className="nowPlaying">{this._processArtistName(song.artist)} - {song.title}</h2>
